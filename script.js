@@ -19,6 +19,12 @@ const mensagemDeDerrota = [
 
 let pontos = 0;
 
+let ganhouPontos = false;
+
+function pontuarPorMetros() {
+    
+}
+
 document.addEventListener('keyup', pulaPersonagem);
 
 function pulaPersonagem() {
@@ -26,12 +32,11 @@ function pulaPersonagem() {
     personagem.classList.add('pular');
     setTimeout(() => {
         personagem.classList.remove('pular');
-        pontos++;
-        atualizarPontuacao();
     }, 500);
 }
 
 function atualizarPontuacao() {
+    pontos++;
     pontuacao.innerHTML = "Pontuação: " + pontos;
 }
 
@@ -41,6 +46,19 @@ function verificarColisoes(){
     const posicaoPersonagem = parseFloat(getComputedStyle(personagem).bottom);
 
     const posicaoNuvem = parseFloat(getComputedStyle(nuvem).bottom);
+
+    if (posicaoCano <= 100 && posicaoCano < 0 && posicaoPersonagem > 60){
+        if (!ganhouPontos) {
+            ganhouPontos = true;
+            atualizarPontuacao();
+            console.log("MANDA AQ" + ganhouPontos);
+        }
+    }
+
+    if (posicaoPersonagem < 60) {
+        ganhouPontos = false;
+    }
+
 
     if (posicaoCano <= 100 && posicaoCano > 0 && posicaoPersonagem < 60) {
         let mensagem = Math.floor(Math.random() * 10);
@@ -69,6 +87,7 @@ let loopJogo = setInterval(verificarColisoes, 10);
 
 function pararJogo() {
     clearInterval(loopJogo);
+    
     console.log("Jogo Parado");
 }
 
